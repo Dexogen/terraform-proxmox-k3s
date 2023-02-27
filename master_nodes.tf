@@ -106,6 +106,7 @@ data "external" "kubeconfig" {
     "/usr/bin/ssh",
     "-o UserKnownHostsFile=/dev/null",
     "-o StrictHostKeyChecking=no",
+    "-i ${file("~/.ssh/id_rsa")}",
     "${local.master_node_ciuser}@${local.master_node_ips[0]}",
     "echo '{\"kubeconfig\":\"'$(sudo cat /etc/rancher/k3s/k3s.yaml | base64)'\"}'"
   ]
