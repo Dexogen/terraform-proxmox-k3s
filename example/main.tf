@@ -1,5 +1,5 @@
 module "k3s" {
-  source  = "github.com/jan-tee/terraform-proxmox-k3s"
+  source  = "github.com/Dexogen/terraform-proxmox-k3s"
   # source = "../"
   #version = ">= 0.0.0, < 1.0.0" # Get latest 0.X release
 

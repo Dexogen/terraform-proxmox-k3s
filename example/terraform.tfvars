@@ -1,60 +1,43 @@
-# cluster name!
-cluster_name         = "bart"
+cluster_name         = "dex-k3s"
 
-# if you want to add any "insecure" registries to the nodes, add them here
-insecure_registries = [ "registry.k8s.lab" ]
+insecure_registries = [ "hub.dexogen.ru" ]
 
-# default node settings are inherited to all node types, you only need to override the settings you want to change
 default_node_settings = {
-  nameserver   = "10.10.0.1"
-  searchdomain = "k8s.lab"
-  target_node  = "pve"
-  target_pool  = "k8s"
-  image_id     = "template-cloudinit-ubuntu2204"
+  nameserver   = "192.168.2.1"
+  searchdomain = "k8s.dexogen.ru"
+  target_node  = "dex-srv-1"
+  target_pool  = "K3S"
+  image_id     = "ubuntu-22.04"
   disk_size    = "30G"
   memory       = 4096
-  storage_id   = "vms-01"
-  subnet       = "10.10.0.0/16"
-  gw           = "10.10.0.1"
+  storage_id   = "ssd-raid"
+  subnet       = "192.168.2.0/23"
+  gw           = "192.168.2.1"
   ciuser       = "terraform"
-  network_bridge = "vmbr0"
-  # put your authorized_keys content below this line, before the end-of-file marker
+  network_bridge = "vmbr2"
   authorized_keys = <<EOF
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDAQKzUKoLlnmONhr0X5Nd99r6M96VbKysVVrgKVlaADVWSTNJxoaZY4U1BIHXvXpWrTWQLzuKz1JOkroMI1xZCbjR2fv7wWbRqcALadINCRs5fE8oTA/ZQsar82NUzMGHxNtlrhaRhiHf4JLzAdBQoPQaIHPYROpqT2ygABoDhBtP7HzsAA5ul9hVkGz2eM/j5NguvgTMzU/mGwlnLXGDaihGmY0eQLvxpergvDeczxjb2yYBMVm9execfT8Y8TxitivQzZZxwM/hlF/y9ggfBb3XRMbdOog/fwQlLmCn0ffMXZapAIieLKgF6LLljvZz8c+8Wl2ybZcWnOMUN/r/1bn0coLVe6exUK9ygMyqKl2tFqY3ITuuV3Pkk0cBtzvypGYPhdiPdf5701zZMgyDtO3hzk5cjJXx10CfuvwTsPLkLqCzu7HJjW2s+1FL3stk7VYw4e9MGr+Z46mBH+lWGn4RNQmDvhR3ChdVNb1HgslM5dN9VWqtfyO4XVI+LRf0= root@admin
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwDau78dL7wMmxVePHR9FsH9GyLO88lViIW4fEpEsutsUYLyaYbyrxnf2jUJ6FxInpe/VrnW23XViZAf3QEDfaPjJlcsNzdZ4najsBULvxjYnPASPp3EhKWbRYP4Gx/y6JV/LE8KmhG60YU7RxbDIEWKykVzj9sQYPAo3r6BfS6gRVd8NXRh2ww00JDfTDdjWTn1cAwMR4ccj+O2Nw539kr8+DWfi5MIm3nwyIIMnM3Of8Aq4FhP2BTLsl/16CTQMBWybHyAj27kcUEGifQHhxzggpA1/hU6haC91sEAGr6cGRSgwSf/o8PzcJ/E89XVUr7GMFfMoj9UcA4cAvCY3T
     EOF
 }
 
-# support node
 support_node_settings = {
-  ip_offset = 10 * 256 + 1,
+  ip_offset = 150,
   memory = 2048
 }
 
-# 2 master nodes
 master_node_settings = {
-  count     = 2
-  ip_offset = 10 * 256 + 2
+  count     = 1
+  ip_offset = 151
   memory    = 2048
 }
 
-# 2 node pools
 node_pools = [
   {
-    name      = "small"
+    name      = "worker"
     cores     = 2
-    size      = 25
-    disk_size = "10G"
-    ip_offset = 10 * 256 + 10
-    memory    = 2048
-    node_labels = [ "tietze.io/instance-type=small" ]
-  },
-  {
-    name      = "large"
-    cores     = 4
     size      = 2
-    disk_size = "30G"
-    ip_offset = 10 * 256 + 100
-    memory    = 10000
-    node_labels = [ "tietze.io/instance-type=large" ]
+    disk_size = "10G"
+    ip_offset = 153
+    memory    = 2048
   }
 ]
