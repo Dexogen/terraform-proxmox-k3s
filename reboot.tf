@@ -20,6 +20,7 @@ resource "null_resource" "k3s-reboot-task" {
     type = "ssh"
     user = "terraform"
     host = each.value
+    private_key = "${file("~/.ssh/id_rsa")}"
   }
 
   provisioner "remote-exec" {
